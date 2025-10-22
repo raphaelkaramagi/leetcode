@@ -3,50 +3,44 @@ import java.util.*;
 // Problem 121. Best Time to Buy and Sell Stock (EASY) 
 // Attempt 1 - misunderstoodf the poble, based one example cases (fully read and understand PROBLEM stateement,
 // not memorizing example cases
+// https://leetcode.com/problems/best-time-to-buy-and-sell-stock/
 
 public class Problem_121 {
 
+    // PLAN:
+        //  insight: For each day, the best profit if we sell that day = current price - minimum price seen so far
+        // We only need to track: (1) the lowest price we've seen, (2) the best profit we've found
+        //
+        // 0.  if prices array is empty, return 0
+        // 1. minPrice = prices[0] (first price is our initial minimum)
+        // 2. maxProfit = 0 (worst case: no profit)
+        // 3. loop through prices starting from index 1 (i=1 to prices.length-1)
+        //      4. Calculate profit if we sell today: profit = prices[i] - minPrice
+        //      5. Update maxProfit if this profit is better: maxProfit = Math.max(maxProfit, profit)
+        //      6. Update minPrice if today's price is lower: minPrice = Math.min(minPrice, prices[i])
+        // 7. Return maxProfit
+
+
 
     public int maxProfit(int[] prices) {
-        // 0. create a temp duplicate of prices
-        //1. Arrays.sort(temp) and get value of index 0 for minPrice : O(nlogn)
-        // 2. Turn prices intoArrayList
-        // 3. do prices.indexOf(minPrice) and store minIndex
-        // 3.5 Create value maxSellingDay = minPrice;
-        // 4. start a loop from i = minIndex 
-            // if prices(i) > maxSellingDay
-                // maxSellingDay = prices(i)
-
-        // 5. Return maxSellingDay - minPrice
-
-        int[] temp = Arrays.copyOf(prices, prices.length);
-
-        Arrays.sort(temp);
-        int minPrice = temp[0];
-        System.out.println("minPrice is:"+minPrice);
-
+        if (prices.length == 0) return 0;
         
-        List<Integer> priceList = new ArrayList<>();
-        for(int i=0; i<prices.length;i++){
-            priceList.add(prices[i]);
+        int minPrice = prices[0];  
+        int maxProfit = 0;         
+        
+        for (int i = 1; i < prices.length; i++) {
+            int profit = prices[i] - minPrice;
+            maxProfit = Math.max(maxProfit, profit);
+            
+            minPrice = Math.min(minPrice, prices[i]);
         }
         
-        int minIndex = priceList.indexOf(minPrice);
-
-        int maxSellingPrice = minPrice;
-        for(int i = minIndex + 1; i < prices.length; i++){
-            if(prices[i] >  maxSellingPrice) {
-                maxSellingPrice = prices[i];
-            }
-        }
-        int profit = maxSellingPrice - minPrice;
-        
-        return profit;
+        return maxProfit;
     }
 
     public static void main(String[] args) {
         Problem_121 problem_121 = new Problem_121();
-        int[] prices = {7,6,4,3,1};
+        int[] prices = {2,1,2,0,1};
         System.out.println(problem_121.maxProfit(prices));
     }
 
