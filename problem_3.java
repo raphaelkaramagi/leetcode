@@ -1,7 +1,7 @@
 import java.util.*;
 
 /*
- * 3. Longest Substring Without Repeating Characters
+ * 3. Longest Substring Without Repeating Characters (MEDIUM) (NOT SOLVED - O(N^2))
  *  Given a string s, find the length of the longest substring without duplicate characters.
  * https://leetcode.com/problems/longest-substring-without-repeating-characters/description/
  * 
@@ -9,7 +9,7 @@ import java.util.*;
  to reduce to O(N).
  */
 
-public class problem_3 {
+public class Problem_3 {
 
 
     public int lengthOfLongestSubstring(String s) {
@@ -52,7 +52,7 @@ public class problem_3 {
         return maxLength;
     }
     public static void main(String[] args) {
-        problem_3 problem_3 = new problem_3();
+        Problem_3 problem_3 = new Problem_3();
         String s = "abcabcbb";
         System.out.println(problem_3.lengthOfLongestSubstring(s));
     }
