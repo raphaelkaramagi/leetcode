@@ -13,43 +13,8 @@ public class Problem_3 {
 
 
     public int lengthOfLongestSubstring(String s) {
-
-        char[] chars = s.toCharArray();
-        Character[] characters = new Character[chars.length];
-        for (int i=0; i<chars.length;i++){
-            characters[i] = chars[i];
-        }
-        List<Character> charactersList = Arrays.asList(characters);
-        LinkedList<Character> charactersLinked = new LinkedList<>(charactersList);
-
-        int maxLength = 0;
-        boolean validSubstring = false;
-
-        for(int i=0; i<characters.length; i++){
-            Set<Character> seenChars = new HashSet<>();
-            int length = 0;
-
-            ListIterator<Character> iterator = charactersLinked.listIterator(i);
-            if(characters.length > 0) validSubstring = true;
-
-            while(validSubstring && iterator.hasNext()){
-                
-
-                    Character currentElement = iterator.next(); 
-                    System.out.println(currentElement);
-
-                    if(seenChars.contains(currentElement)){
-                        validSubstring = false;
-                    } else {
-                        seenChars.add(currentElement);
-                        length++;
-                    }
-
-                    maxLength = Math.max(maxLength, length);
-                }   
-        }
-
-        return maxLength;
+        
+        return 0;
     }
     public static void main(String[] args) {
         Problem_3 problem_3 = new Problem_3();
