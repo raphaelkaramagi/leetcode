@@ -1,7 +1,7 @@
 import java.util.*;
 
 /*
- * 3. Longest Substring Without Repeating Characters (MEDIUM) (NOT SOLVED)
+ * 3. Longest Substring Without Repeating Characters (MEDIUM) (SOLVED)
  *  Given a string s, find the length of the longest substring without duplicate characters.
  * https://leetcode.com/problems/longest-substring-without-repeating-characters/description/
  * 
@@ -22,7 +22,7 @@ public class Problem_3 {
         if(s.length() ==1) return 1;
         int maxLength = 0;
         int left = 0;
-        
+
         Map<Character, Integer> charIndexMap = new HashMap<>();
         for(int right = 0; right < s.length(); right++) {
             char currentChar = s.charAt(right);

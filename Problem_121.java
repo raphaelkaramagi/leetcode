@@ -1,5 +1,3 @@
-import java.util.*;
-
 // Problem 121. Best Time to Buy and Sell Stock (EASY) 
 // Attempt 1 - misunderstoodf the poble, based one example cases (fully read and understand PROBLEM stateement,
 // not memorizing example cases
