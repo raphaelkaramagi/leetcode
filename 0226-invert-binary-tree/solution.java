@@ -13,32 +13,20 @@
  *     }
  * }
  */
-
- // Traverse each row, swap leftmost node with rightmost, then second leftmost with second right most etc.
-
-
 class Solution {
     public TreeNode invertTree(TreeNode root) {
+        // for every node, swap its children, if it has them
         if(root == null) return null;
+        if(root.left == null && root.right == null) return root; 
 
-        swapChildren(root);
+        TreeNode tempLeft = root.left;
+        root.left =  root.right;
+        root.right = tempLeft;
 
-        if(!(root.left==null)){
-        invertTree(root.left); 
-        }
-        if(!(root.right==null)){
-        invertTree(root.right);      
-        }
+        if(root.left != null) invertTree(root.left);
+        if (root.right!=null) invertTree(root.right);
 
-        return root;
+    return root;
     }
 
-    private TreeNode swapChildren(TreeNode root){
-        if(root.left == null && root.right == null) return root;
-        TreeNode leftTemp = root.left;
-        root.left = root.right;
-        root.right = leftTemp;
-
-        return root;
-    }
 }
