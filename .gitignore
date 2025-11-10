@@ -1,0 +1,19 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.venv/
+# Distribution and packaging
+.eggs/
+*.egg-info/
+dist/
+build/
+# IDEs
+.vscode/
+
+# macOS
+.DS_Store
