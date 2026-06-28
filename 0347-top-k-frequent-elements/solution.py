@@ -1,14 +1,10 @@
-from typing import List
-from collections import defaultdict
+from collections import Counter
 
 class Solution:
     def topKFrequent(self, nums: List[int], k: int) -> List[int]:
-        if len(nums) == 0: return None
-
-        map = defaultdict(int) 
-        for num in nums:
-            map[num] +=1
-        topK = sorted(map.items(), key=lambda item: item[1], reverse=True)[:k]
-        topKeys = [item[0] for item in topK]
-
-        return topKeys
+        list = []
+        counted = Counter(nums)
+        sort = sorted(counted.items(), key=lambda x:x[1], reverse=True)
+        for i in range(k):
+            list.append(sort[i][0])
+        return list
