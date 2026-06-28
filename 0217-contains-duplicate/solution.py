@@ -1,10 +1,12 @@
-from typing import List
-
 class Solution:
-        def containsDuplicate(self, nums: List[int]) -> bool:
-            seen = set()
-            for num in nums:
-                if num in seen:
-                    return True
-                seen.add(num)
-            return False
+    def containsDuplicate(self, nums: List[int]) -> bool:
+        map = {}
+        status = False
+        for num in nums:
+            map[num] = map.get(num, 0) + 1
+            if map.get(num) > 1:
+                status = True
+                break
+        return status
+
+
