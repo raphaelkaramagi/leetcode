@@ -1,12 +1,12 @@
-from typing import List
-from collections import defaultdict
-
 class Solution:
     def groupAnagrams(self, strs: List[str]) -> List[List[str]]:
-        charMap = defaultdict(list)
-
-        for string in strs:
-            chars = sorted(string)
-            charMap[tuple(chars)].append(string)
-
-        return list(charMap.values())
+        map = {}
+        list = []
+        for word in strs:
+            key = "".join(sorted(word))
+            map.setdefault(key,[]).append(word)
+        for key in map:
+            list.append(map.get(key))
+        return list
+            
+        
