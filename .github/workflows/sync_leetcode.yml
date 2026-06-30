@@ -1,0 +1,91 @@
+name: Sync Leetcode
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 8 * * *" # Runs once a day automatically
+permissions:
+  contents: write
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Verify LeetCode auth
+        env:
+          LEETCODE_CSRF_TOKEN: ${{ secrets.LEETCODE_CSRF_TOKEN }}
+          LEETCODE_SESSION: ${{ secrets.LEETCODE_SESSION }}
+        run: |
+          node <<'NODE'
+          async function main() {
+            const csrfToken = process.env.LEETCODE_CSRF_TOKEN ?? "";
+            const leetcodeSession = process.env.LEETCODE_SESSION ?? "";
+
+            if (csrfToken.length < 16 || leetcodeSession.length < 100) {
+              console.error("LeetCode auth preflight failed.");
+              console.error("One or both LeetCode secrets are missing or shorter than expected.");
+              process.exit(1);
+            }
+
+            const payload = {
+              query: `query ($offset: Int!, $limit: Int!, $slug: String) {
+                userStatus {
+                  isSignedIn
+                }
+                submissionList(offset: $offset, limit: $limit, questionSlug: $slug) {
+                  hasNext
+                  submissions {
+                    id
+                  }
+                }
+              }`,
+              variables: { offset: 0, limit: 1, slug: null },
+            };
+
+            const response = await fetch("https://leetcode.com/graphql/", {
+              method: "POST",
+              headers: {
+                "content-type": "application/json",
+                origin: "https://leetcode.com",
+                referer: "https://leetcode.com",
+                cookie: `csrftoken=${csrfToken}; LEETCODE_SESSION=${leetcodeSession};`,
+                "x-csrftoken": csrfToken,
+              },
+              body: JSON.stringify(payload),
+            });
+
+            const body = await response.json();
+            const isSignedIn = body?.data?.userStatus?.isSignedIn;
+            const submissionList = body?.data?.submissionList;
+
+            if (isSignedIn !== true) {
+              console.error("LeetCode auth preflight failed.");
+              console.error(`HTTP status: ${response.status}`);
+              console.error(`isSignedIn: ${isSignedIn}`);
+              console.error("LeetCode does not consider this GitHub Actions request signed in.");
+              process.exit(1);
+            }
+
+            if (!Array.isArray(submissionList?.submissions)) {
+              console.error("LeetCode auth preflight failed.");
+              console.error(`HTTP status: ${response.status}`);
+              console.error(`isSignedIn: ${isSignedIn}`);
+              console.error(`hasNext type: ${typeof submissionList?.hasNext}`);
+              console.error(`submissions type: ${typeof submissionList?.submissions}`);
+              console.error("Expected submissions to be an array. The LeetCode submissions API response is not compatible with this action.");
+              process.exit(1);
+            }
+
+            console.log("LeetCode auth preflight passed.");
+          }
+
+          main().catch((error) => {
+            console.error(error);
+            process.exit(1);
+          });
+          NODE
+
+      - name: Sync
+        uses: joshcai/leetcode-sync@v1.7
+        with:
+          github-token: ${{ github.token }}
+          leetcode-csrf-token: ${{ secrets.LEETCODE_CSRF_TOKEN }}
+          leetcode-session: ${{ secrets.LEETCODE_SESSION }}
