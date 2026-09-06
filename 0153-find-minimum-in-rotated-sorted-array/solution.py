@@ -6,30 +6,18 @@ class Solution:
         # Compare middle and the nums[left] and nums[right] - the side which isn't chronological (ie numms[left > middle etc.]) is the side with the inflection point and hence the min
 
 
-        if nums[0] < nums[(len(nums)-1)]: 
-            return nums[0]
+        left, right = 0, len(nums) - 1
 
-        left = 0
-        right = len(nums)-1
+        while left < right:
+            mid = left + (right - left) // 2
 
-        while(left<=right):
-            mid = left + (right-left)//2
-
-            if nums[mid]<nums[left]:
-                right = mid
-                if left ==right:
-                    return nums[left]
-                continue
-            elif nums[mid]>nums[right]:
-                left = mid+1
-                if left ==right:
-                    return nums[left]
-                continue
+            # The right half is broken; minimum must be right of mid
+            if nums[mid] > nums[right]:
+                left = mid + 1
+            # The right half is sorted; mid could be the minimum, or it's left of mid
             else:
-                return nums[left]
+                right = mid
 
-            
-
-        return None
-
+        # Loop ends when left == right, pointing directly to the minimum
+        return nums[left]
 
