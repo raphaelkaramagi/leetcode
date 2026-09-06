@@ -38,12 +38,6 @@ class Solution:
             prev = curr
             curr = temp
 
-        [1,2]
-        [3,4]
-
-        [1,2,3]
-        [4,5]
-
         # Splicing together
         firstStart = head
         while firstStart is not None:
